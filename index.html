@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>UCL Cleaning System</title>
+        <h1>UCL Class Cleaning Organizing System</h1>
+    </head>
+    <body>
+        <h3 id="date">Date: </h3>
+        <button onclick="previousFriday()">Back</button>
+        <button onclick="nextFriday()">Forward</button>
+
+        <p id="list">
+
+        </p>
+
+        <script>
+            /*
+            function getTodayDate() {
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+            */
+            let displayDate;
+            let chores = ["Sweep the floor(1)", "Sweep the floor(2)", "Mop the floor(1)", "Mop the floor(2)","Clean whiteboard and teacher's desk(1)", "Clean window near road(1)", "Clean window near corridor(1)", "Organize tables/chairs", "Tie curtains(1)", "Clean the locker(1)"];
+            let names = ["Alex", "William", "Henry", "Felix", "Isabella", "Ben", "Hyunsung", "Leo", "Andy", "Rachel"];
+            let displayArray = [];
+
+            function getNextFriday() {
+                let currentDate = new Date();
+                let daysUntilFriday = (5 - currentDate.getDay() + 7) % 7; // Calculate days until next Friday
+                let nextFriday = new Date(currentDate);
+                nextFriday.setDate(currentDate.getDate() + daysUntilFriday);
+
+                displayDate = nextFriday;
+
+                const year = nextFriday.getFullYear();
+                const month = String(nextFriday.getMonth() + 1).padStart(2, '0');
+                const day = String(nextFriday.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+    
+            }
+
+            function previousFriday() {
+                displayDate.setDate(displayDate.getDate() - 7);
+
+                const year = displayDate.getFullYear();
+                const month = String(displayDate.getMonth() + 1).padStart(2, '0');
+                const day = String(displayDate.getDate()).padStart(2, '0');
+
+                document.getElementById('date').textContent = "Date: " + `${year}-${month}-${day}`;
+
+                let carry = chores.shift();
+                chores.push(carry);
+                document.getElementById('list').innerHTML = "";
+                organizeText();
+
+            }
+
+            function nextFriday() {
+                displayDate.setDate(displayDate.getDate() + 7);
+
+                const year = displayDate.getFullYear();
+                const month = String(displayDate.getMonth() + 1).padStart(2, '0');
+                const day = String(displayDate.getDate()).padStart(2, '0');
+
+                document.getElementById('date').textContent = "Date: " + `${year}-${month}-${day}`;
+
+                let carry = chores.pop();
+                chores.unshift(carry);
+                document.getElementById('list').innerHTML = "";
+                organizeText();
+
+            }
+
+            function organizeText() {
+                document.body.innerHTML += "<br>";
+                names.forEach((element, index) => {
+                    displayArray[index] = `${element}: ${chores[index]}` + "<br />";
+                    
+                })
+                document.getElementById('list').innerHTML += displayArray.join("");
+            }
+
+            function copyList() {
+                let copyText = document.getElementById('list').textContent;
+                // copyText.select();
+                // copyText.setSelectionRange(0, 99999);
+
+                navigator.clipboard.writeText(copyText);
+
+                alert("Copied the text: " + copyText);
+            }
+
+            document.getElementById('date').textContent = "Date: " + getNextFriday();
+            organizeText();
+
+        </script>
+        <!-- <table>
+            <tr>
+                <td>
+                    <p id="text">
+                        Alex:<br>
+                        William:<br>
+                        Henry:<br>
+                        Felix:<br>
+                        Isabella:<br>
+                        Ben:<br>
+                        Hyunsung:<br>
+                        Leo:<br>
+                        Andy:<br>
+                        Rachel:<br>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        -->
+        <button onclick="copyList()">Copy</button>
+        
+    </body>
+</html>
