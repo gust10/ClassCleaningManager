@@ -31,11 +31,17 @@
 
             function getNextFriday() {
                 let currentDate = new Date();
+                let startDate = new Date("02/23/2024");
                 let daysUntilFriday = (5 - currentDate.getDay() + 7) % 7; // Calculate days until next Friday
                 let nextFriday = new Date(currentDate);
                 nextFriday.setDate(currentDate.getDate() + daysUntilFriday);
 
                 displayDate = nextFriday;
+
+                let differenceInDay = nextFriday.getTime() - startDate.getTime();
+                let numberOfDays = differenceInDay/(1000 * 60 * 60 * 24);
+                let daysShifted = Math.floor(numberOfDays / 7);
+                shift(true, daysShifted);
 
                 const year = nextFriday.getFullYear();
                 const month = String(nextFriday.getMonth() + 1).padStart(2, '0');
@@ -53,10 +59,7 @@
 
                 document.getElementById('date').textContent = "Date: " + `${year}-${month}-${day}`;
 
-                let carry = chores.shift();
-                chores.push(carry);
-                document.getElementById('list').innerHTML = "";
-                organizeText();
+                shift(false, 1);
 
             }
 
@@ -69,14 +72,32 @@
 
                 document.getElementById('date').textContent = "Date: " + `${year}-${month}-${day}`;
 
-                let carry = chores.pop();
-                chores.unshift(carry);
-                document.getElementById('list').innerHTML = "";
-                organizeText();
+                shift(true, 1);
 
             }
 
+            function shift(bool, num) {
+                if(bool === true) {
+                    for(let n = 1; n <= num; n++) {
+                        let carry = chores.pop();
+                        chores.unshift(carry);
+                        document.getElementById('list').innerHTML = "";
+                        organizeText();
+                    }
+
+                } 
+                else if(bool === false) {
+                    for(let n = 1; n <= num; n++) {
+                        let carry = chores.shift();
+                        chores.push(carry);
+                        document.getElementById('list').innerHTML = "";
+                        organizeText();
+                    }
+                }
+            }
+
             function organizeText() {
+                document.getElementById('list').innerHTML = "";
                 document.body.innerHTML += "<br>";
                 names.forEach((element, index) => {
                     displayArray[index] = `${element}: ${chores[index]}` + "<br />";
