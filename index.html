@@ -42,11 +42,15 @@
                 let numberOfDays = differenceInDay/(1000 * 60 * 60 * 24);
                 let daysShifted = Math.floor(numberOfDays / 7);
                 shift(true, daysShifted);
+                
+                // organizeText();
 
                 const year = nextFriday.getFullYear();
                 const month = String(nextFriday.getMonth() + 1).padStart(2, '0');
                 const day = String(nextFriday.getDate()).padStart(2, '0');
-                return `${year}-${month}-${day}`;
+
+                document.getElementById('date').textContent = "Date: " + `${year}-${month}-${day}`;
+                
     
             }
 
@@ -115,8 +119,8 @@
 
                 alert("Copied the text: " + copyText);
             }
-
-            document.getElementById('date').textContent = "Date: " + getNextFriday();
+            getNextFriday();
+            // document.getElementById('date').textContent = "Date: " + getNextFriday();
             organizeText();
 
         </script>
